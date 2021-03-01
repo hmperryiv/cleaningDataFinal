@@ -32,8 +32,6 @@ humanActivityFiles <- unzip("./humanActivity.zip", files = NULL, list = FALSE, o
       setTimes = FALSE)
 
 
-setwd("./data")
-
 #Step 3: Bring all the test participant files into data frames
 #Measurements will be the first read because it's needed by both test and train participants
 #This will also be morphed into our column names for our X_test (train).txt files
@@ -97,12 +95,16 @@ combinedMeanAndSandardDevDataSet <- select_if(combinedDataSet,
                                           grepl("mean", names(combinedDataSet)) | 
                                           grepl("std", names(combinedDataSet)))
 
+#Step10: mutate the combinded data set to meet the objectives of item 5 of the assigment.  
+#        First, group by subjectnumber, activitynumber, and activitydesc
+#        Second, summarise_all columns suing the mean function.
 combinedAverageByTestSubjectAndActivity <- group_by(combinedDataSet, subjectnumber, activitynumber, activitydesc)
 
 combinedAverageByTestSubjectAndActivity2 <- summarise_all(combinedAverageByTestSubjectAndActivity, funs(mean(.)))
 
+setwd("..")
 
-
+#Step 11: Export the results to the ./result folder
 if(!dir.exists("./results")) {
   dir.create("./results")
 }
