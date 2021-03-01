@@ -84,6 +84,9 @@ combinedDataSet <- as_tibble(bind_rows(testCombinedDataSet, trainCombinedDataSet
 
 #Step 8: clean up the column names
 combinedDataSet <- rename_with(combinedDataSet, ~ tolower(.x))
+combinedDataSet <- rename_with(combinedDataSet, ~ sub("acc", "accelerometer", .x))
+combinedDataSet <- rename_with(combinedDataSet, ~ sub("gyro", "gyroscope", .x))
+combinedDataSet <- rename_with(combinedDataSet, ~ sub("^t", "timedomain", .x))
 
 
 #Step 9: prepare a subset that presents only the means and standard deviations of each
@@ -116,5 +119,7 @@ write_csv2(trainCombinedDataSet, "./train_combined_data_set.csv")
 write_csv2(combinedDataSet, "./combined_data_set.csv")
 write_csv2(combinedMeanAndSandardDevDataSet, "./combined_mean_std_dev_data_set.csv")
 write_csv2(combinedAverageByTestSubjectAndActivity2, "./avg_measurements_by_subject_and_activity_data_set.csv")
+
+write.table(combinedAverageByTestSubjectAndActivity2, "./avg_measurements_by_subject_and_activity_data_set.txt", row.names = FALSE)
 
 ```
